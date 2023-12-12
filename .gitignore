@@ -1,2 +1,2 @@
 htmx-test
-log/
+log/*.log
