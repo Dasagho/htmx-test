@@ -1,0 +1,12 @@
+{{define "list"}}
+	<p>heyo</p>
+	{{if eq (len .List) 0}}
+		<p>Lista vacia</p>
+	{{else}}
+		<ul>
+			{{range $value := .List}}
+				<li>{{$value}}</li>
+			{{end}}
+		</ul>
+	{{end}}
+{{end}}
