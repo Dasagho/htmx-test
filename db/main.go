@@ -40,14 +40,18 @@ func ConnectDB() {
 		credentials["pass"], "postgres", credentials["ssl"]))
 	if err != nil {
 		logging.Error("Failed to connect database")
-		log.Fatal(err)
+		log.Println(err)
 		return
 	}
 	logging.Debug("Conectado a base de datos 0...")
 	logging.Debug("Checkeando existencia de base de datos...")
 
 	// Ejecutar script para crear la base de datos y cerrar conexion
-	executeSQLFile(db, filepath.Join("migrations", "0-createDataBase.sql"))
+	err = executeSQLFile(db, filepath.Join("db", "migrations", "0-createDataBase.sql"))
+	if err != nil {
+		logging.Error("Failed to execute migration 0")
+		log.Println(err)
+	}
 	db.Close()
 
 	// Connect to correctDatabase
@@ -56,22 +60,24 @@ func ConnectDB() {
 		credentials["pass"], credentials["dbname"], credentials["ssl"]))
 	if err != nil {
 		logging.Error("Failed to connect database")
-		log.Fatal(err)
+		log.Println(err)
 		return
 	}
 
 	logging.Debug("Ejecutando migraciones...")
 	// Ejecutar scripts para borrar y crear tablas
-	err = executeSQLFile(db, filepath.Join("migrations", "1-deleteTables.sql"))
+	err = executeSQLFile(db, filepath.Join("db", "migrations", "1-deleteTables.sql"))
 	if err != nil {
 		logging.Error("Failed to execute migration 1")
-		log.Fatal(err)
+		log.Println(err)
+		return
 	}
 
-	err = executeSQLFile(db, filepath.Join("migrations", "2-createTables.sql"))
+	err = executeSQLFile(db, filepath.Join("db", "migrations", "2-createTables.sql"))
 	if err != nil {
 		logging.Error("Failed to execute migration 2")
-		log.Fatal(err)
+		log.Println(err)
+		return
 	}
 }
 
@@ -89,13 +95,14 @@ func initializeCredentials() {
 func executeSQLFile(db *sql.DB, filePath string) error {
 	content, err := os.ReadFile(filepath.Clean(filePath))
 	if err != nil {
-		log.Fatalf("Error leyendo el archivo SQL: %v", err)
+		log.Printf("Error leyendo el archivo SQL: %v", err)
 		return err
 	}
 
 	_, err = db.Exec(string(content))
 	if err != nil {
-		log.Fatalf("Error ejecutando el archivo SQL (%s): %v", filePath, err)
+		log.Printf("Error ejecutando el archivo SQL (%s): %v", filePath, err)
 		return err
 	}
+	return nil
 }

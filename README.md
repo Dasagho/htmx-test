@@ -1,2 +1,5 @@
 # To Do
-- Database ORM
+- Testing
+- Middelware
+	- AuthMiddelware
+	- Cookies
