@@ -3,30 +3,25 @@ package routers
 import (
 	"net/http"
 
-	"github.com/dasagho/htmx-test/db"
 	"github.com/dasagho/htmx-test/handlers"
-	"github.com/dasagho/htmx-test/service"
+	"github.com/dasagho/htmx-test/views"
 )
 
 func NewServer() *http.ServeMux {
-	// db, err := sql.Open("postgres", "your-database-connection-string")
-	// if err != nil {
-	//     // Manejar error
-	// }
-	// defer db.Close()
+	// Parse html templates
+	views.InitializeTemplate()
 
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", handlers.IndexHandler)
+	// Init main Mux
+	mainMux := http.NewServeMux()
+	mainMux.HandleFunc("/", handlers.IndexHandler)
 
-	apiMux := http.NewServeMux()
-	apiMux.HandleFunc("/mouse_entered", handlers.Mouse)
+	// Init Api Mux
+	apiMux := NewApiMux()
 
-	resultRepo := &db.ResultRepository{}
-	resultService := &service.SearchResultSerice{SearchRepo: resultRepo}
-	resultHandler := handlers.SearchResultHandler{SearchResultService: resultService}
-	apiMux.Handle("/trigger_delay", resultHandler)
+	// Init static Mux
+	fs := http.FileServer(http.Dir("static"))
 
-	mux.Handle("/api/", http.StripPrefix("/api", apiMux))
-
-	return mux
+	mainMux.Handle("/api/", http.StripPrefix("/api", apiMux))
+	mainMux.Handle("/static/", http.StripPrefix("/static/", fs))
+	return mainMux
 }

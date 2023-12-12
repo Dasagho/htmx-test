@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/dasagho/htmx-test/db"
@@ -25,7 +24,7 @@ func (s *SearchResultSerice) GetResults(query string) (*models.Result, error) {
 	} else {
 		lista = strings.Split(valorSinEspacios, " ")
 	}
+
 	data := models.Result{List: lista}
-	fmt.Println("Lista en service:", data.List)
 	return &data, nil
 }

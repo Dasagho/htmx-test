@@ -17,6 +17,7 @@ func (repo *ResultRepository) GetResults(query string) (*models.Result, error) {
 	} else {
 		lista = strings.Split(valorSinEspacios, " ")
 	}
+
 	data := models.Result{List: lista}
 
 	return &data, nil
