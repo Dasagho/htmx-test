@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"html/template"
 	"io/fs"
+	"log"
 	"path/filepath"
 	"strings"
+
+	"github.com/dasagho/htmx-test/util"
 )
 
 type Template struct {
@@ -15,13 +18,20 @@ type Template struct {
 var Tmpl Template
 
 func InitializeTemplate() {
+	projectRoot, err := util.FindGoMod()
+	if err != nil {
+		log.Fatal("error encontrando go.mod" + err.Error())
+	}
+
 	Tmpl.Templ = template.New("base")
-	err := filepath.Walk("views", func(path string, info fs.FileInfo, err error) error {
+	err = filepath.Walk(filepath.Join(projectRoot, "views"), func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
-			return fmt.Errorf("Error dentro de func anonima %s", err)
+			return fmt.Errorf("error dentro de func anonima %s", err)
 		}
 
-		if path == "views" {
+		path = util.TrimUpTo("views", path)
+
+		if path == "views" || path == "workspaces" {
 			return nil
 		}
 
@@ -52,7 +62,7 @@ func (t *Template) parseTemplates(path ...string) error {
 	htmlFiles := filepath.Join(path...)
 	templ, err := t.Templ.ParseGlob(htmlFiles)
 	if err != nil {
-		return fmt.Errorf("Error parseando fichero: %s, %s", path, err)
+		return fmt.Errorf("error parseando fichero: %s, %s", path, err)
 	}
 
 	t.Templ = templ // Solo actualiza t.Templ si ParseGlob fue exitoso

@@ -1,5 +1,4 @@
 # To Do
-- Testing
 - Middelware
 	- AuthMiddelware
 	- Cookies
@@ -7,3 +6,5 @@
 	- Single responsability function
 	- Constructor when necessary
 	- Dependency Injection
+
+- Bug to fix: when run test logging package create log files in the handlers directory

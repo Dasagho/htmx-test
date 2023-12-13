@@ -17,7 +17,6 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		List:     models.Result{List: []string{}},
 	}
 
-	views.InitializeTemplate()
 	err := views.GetTemplates().ExecuteTemplate(w, "index", data)
 	if err != nil {
 		fmt.Fprintf(w, "error al ejecutar el template index %s", err)
