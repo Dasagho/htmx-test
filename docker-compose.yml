@@ -1,4 +1,4 @@
-version: '1'
+version: '1.0'
 
 services:
   postgres:
@@ -7,30 +7,18 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
       POSTGRES_DB: database_test
-    networks:
-      mi-red:
-        ipv4_address: 172.20.0.2 # Asigna una IP específica si lo deseas
+    network_mode: host
     
   mi-aplicacion:
     image: htmx-test # Reemplaza con el nombre de tu imagen de aplicación
     environment:
-      PORT: 3000 # Reemplaza con el puerto que tu aplicación espera
-      HOST: postgres # Usa el nombre del servicio de PostgreSQL
+      PORT: 8000 # Reemplaza con el puerto que tu aplicación espera
+      HOST: localhost # Usa el nombre del servicio de PostgreSQL
       DB_PORT: 5432 # Puerto estándar de PostgreSQL
       USER: postgres # Reemplaza si tienes un nombre de usuario diferente
       PASS: root # Reemplaza con tu contraseña
       DBNAME: database_test # Reemplaza con el nombre de tu base de datos
       SSL: 'disable' # Ajusta según tus necesidades
-    ports:
-      - "8000:3000" # Mapea el puerto de tu aplicación (host:contenedor)
-
+    network_mode: host
     depends_on:
       - postgres
-    networks:
-      - mi-red
-
-networks:
-  mi-red:
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16
