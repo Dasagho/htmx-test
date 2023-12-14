@@ -15,29 +15,29 @@ var db *sql.DB
 var err error
 
 var credentials = map[string]string{
-	"host":   "",
-	"port":   "",
-	"user":   "",
-	"pass":   "",
-	"dbname": "",
-	"ssl":    "",
+	"HOST":    "",
+	"DB_PORT": "",
+	"USER":    "",
+	"PASS":    "",
+	"DBNAME":  "",
+	"SSL":     "",
 }
 
 var defaultCredentials = map[string]string{
-	"host":   "localhost",
-	"port":   "5432",
-	"user":   "postgres",
-	"pass":   "root",
-	"dbname": "database_test",
-	"ssl":    "disable",
+	"HOST":    "localhost",
+	"DB_PORT": "5432",
+	"USER":    "postgres",
+	"PASS":    "root",
+	"DBNAME":  "database_test",
+	"SSL":     "disable",
 }
 
 func ConnectDB() {
 	initializeCredentials()
 	// Connect to check table exists
 	db, err = sql.Open("postgres", fmt.Sprintf(`host=%s port=%s user=%s password=%s dbname=%s sslmode=%s`,
-		credentials["host"], credentials["port"], credentials["user"],
-		credentials["pass"], "postgres", credentials["ssl"]))
+		credentials["HOST"], credentials["DB_PORT"], credentials["USER"],
+		credentials["PASS"], "postgres", credentials["SSL"]))
 	if err != nil {
 		logging.Error("Failed to connect database")
 		log.Println(err)
@@ -56,8 +56,8 @@ func ConnectDB() {
 
 	// Connect to correctDatabase
 	db, err = sql.Open("postgres", fmt.Sprintf(`host=%s port=%s user=%s password=%s dbname=%s sslmode=%s`,
-		credentials["host"], credentials["port"], credentials["user"],
-		credentials["pass"], credentials["dbname"], credentials["ssl"]))
+		credentials["HOST"], credentials["DB_PORT"], credentials["USER"],
+		credentials["PASS"], credentials["DBNAME"], credentials["SSL"]))
 	if err != nil {
 		logging.Error("Failed to connect database")
 		log.Println(err)

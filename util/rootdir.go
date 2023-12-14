@@ -18,6 +18,5 @@ func FindGoMod() (string, error) {
 
 		dir = filepath.Dir(dir)
 	}
-
-	return "", os.ErrNotExist
+	return dir, nil
 }

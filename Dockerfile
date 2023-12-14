@@ -4,11 +4,6 @@ FROM golang:1.21 as builder
 # Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copia el módulo Go y sus dependencias
-COPY go.mod ./
-# COPY go.sum ./
-# RUN go mod download
-
 # Copia el código fuente al directorio de trabajo
 COPY . .
 
@@ -24,16 +19,19 @@ RUN apk --no-cache add ca-certificates
 # Copia el ejecutable desde el contenedor de compilación
 COPY --from=builder /app/myapp /myapp
 
-# Copia los directorios 'view' y 'static' al contenedor
+# Copia el módulo Go y sus dependencias
+COPY --from=builder /app/go.mod ./go.mod
+
+# Copia los directorios 'view', 'static' y 'db' al contenedor
 COPY --from=builder /app/views /views
 COPY --from=builder /app/static /static
+COPY --from=builder /app/db 	/db
 
 # Establece una variable de entorno para el puerto (puede ser sobrescrita en tiempo de ejecución)
 ENV PORT=8090
 
 # Expone el puerto (debe coincidir con la variable de entorno PORT)
 EXPOSE $PORT
-# RUN pwd
-# RUN ls -l
+
 # Ejecuta la aplicación
 CMD ["/myapp"]
