@@ -42,9 +42,7 @@ func TestIndexHandler(t *testing.T) {
 
 	// Crear datos mock
 	data := models.Body{
-		MouseDiv: "Mamala",
-		Search:   "Search",
-		List:     models.Result{List: []string{}},
+		List: models.Result{List: []string{}},
 	}
 
 	// Renderizar el template en una cadena de texto con los datos esperados.

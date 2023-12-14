@@ -10,8 +10,17 @@
 	<script src="https://unpkg.com/htmx.org@1.9.9" integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX" crossorigin="anonymous"></script>
 </head>
 <body>
-	{{.MouseDiv}}
-	{{.Search}}
+	<main>
+		<section>
+			{{if eq (len .ContactList) 0}}
+				<p>Lista de contactos vacia</p>
+			{{else}}
+				{{range $contact := .ContactList}}
+					{{ template "contact" $contact }}
+				{{end}}
+			{{end}}
+		</section>
+	</main>
 	<input 
 		type="text" name="q"
 		hx-get="/api/trigger_delay"

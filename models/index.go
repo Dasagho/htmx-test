@@ -1,9 +1,8 @@
 package models
 
 type Body struct {
-	MouseDiv string
-	Search   string
-	List     Result
+	List        Result
+	ContactList []Contact
 }
 
 type Result struct {

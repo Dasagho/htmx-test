@@ -1,0 +1,8 @@
+{{define "contact"}}
+    <div class="row" id="contact{{.Id}}">
+          <span id="name">{{.Name}}</span>
+          <span id="tel">{{.Telefono}}</span>
+          <input type="button" value="Mod" id="edit-contact" hx-put="/api/contact?id={{.Id}}">
+          <input type="button" value="Del" id="del-contact" hx-delete="/api/contact?id={{.Id}}">
+    </div>
+{{end}}

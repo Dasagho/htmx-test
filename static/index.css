@@ -1,0 +1,7 @@
+.row {
+    display: flex;
+    flex-direction: row;
+    border: solid 1px grey;
+    justify-content: space-between;
+    width: 400px;
+}
