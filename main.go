@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"os"
 
@@ -15,8 +16,14 @@ func main() {
 		port = "8080" // Puerto por defecto
 	}
 
+	host := os.Getenv("HOST")
+	if host == "" {
+		host = "localhost"
+	}
+
 	logging.CreateLogs()
 	db.ConnectDB()
 	mux := routers.NewServer()
+	log.Printf("Server listening on: http://%s:%s", host, port)
 	http.ListenAndServe(":"+port, mux)
 }

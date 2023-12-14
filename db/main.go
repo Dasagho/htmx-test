@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"time"
 
 	logging "github.com/dasagho/htmx-test/log"
 	_ "github.com/lib/pq"
@@ -34,15 +35,21 @@ var defaultCredentials = map[string]string{
 
 func ConnectDB() {
 	initializeCredentials()
-	// Connect to check table exists
-	db, err = sql.Open("postgres", fmt.Sprintf(`host=%s port=%s user=%s password=%s dbname=%s sslmode=%s`,
-		credentials["DB_HOST"], credentials["DB_PORT"], credentials["DB_USER"],
-		credentials["DB_PASS"], "postgres", credentials["DB_SSL"]))
+
+	// Connect to Database
+	connectionCredentials := fmt.Sprintf(`host=%s port=%s user=%s password=%s dbname=%s sslmode=%s`,
+	credentials["DB_HOST"], credentials["DB_PORT"], credentials["DB_USER"],
+	credentials["DB_PASS"], "postgres", credentials["DB_SSL"])
+
+	err = connectWithRetry(connectionCredentials, 5)
+
 	if err != nil {
-		logging.Error("Failed to connect database")
-		log.Println(err)
+		logging.Error("Fallo al intentar conectar a base de datos con las siguientes credenciales" + connectionCredentials)
+		log.Printf("Fallo al intentar conectar a base de datos con las siguientes credenciales: %s", connectionCredentials)
 		return
 	}
+
+	// check if table exists
 	logging.Debug("Conectado a base de datos 0...")
 	logging.Debug("Checkeando existencia de base de datos...")
 
@@ -79,6 +86,31 @@ func ConnectDB() {
 		log.Println(err)
 		return
 	}
+}
+
+func connectWithRetry(dbURL string, maxAttempts int) error {
+    var err error
+
+    for attempts := 0; attempts < maxAttempts; attempts++ {
+        db, err = sql.Open("postgres", dbURL)
+        if err != nil {
+			logging.Error("No se pudo conectar a la base de datos: " + err.Error() + ". Reintentando...")
+            log.Printf("No se pudo conectar a la base de datos: %v. Reintentando...", err)
+        } else {
+            err = db.Ping()
+            if err == nil {
+				logging.Debug("Conexión a la base de datos establecida con éxito.")
+                log.Println("Conexión a la base de datos establecida con éxito.")
+                return nil
+            }
+            log.Printf("Error al realizar ping a la base de datos: %v. Reintentando...", err)
+        }
+
+        // Esperar antes del próximo reintento
+        time.Sleep(2 * time.Second)
+    }
+
+    return fmt.Errorf("después de %d intentos, no se pudo conectar a la base de datos: %v", maxAttempts, err)
 }
 
 func initializeCredentials() {
