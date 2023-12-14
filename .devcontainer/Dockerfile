@@ -1,13 +1,18 @@
-FROM mcr.microsoft.com/devcontainers/go:1-1.21-bullseye
+# Usar la imagen base de Go
+FROM golang:1.21.1
 
-# [Optional] Uncomment this section to install additional OS packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
+# Evitar preguntas de la interfaz de usuario durante la instalación
+ARG DEBIAN_FRONTEND=noninteractive
 
-# [Optional] Uncomment the next lines to use go get to install anything else you need
-# USER vscode
-# RUN go get -x <your-dependency-or-tool>
-# USER root
+# Actualizar los paquetes e instalar fish
+RUN apt-get update && apt-get install -y fish
 
-# [Optional] Uncomment this line to install global node packages.
-# RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
+# Cambiar la shell predeterminada a fish para el usuario root
+RUN chsh -s /usr/bin/fish root
+
+# Instalar herramientas de desarrollo y análisis de Go
+RUN go install golang.org/x/tools/gopls@latest \
+    && go install honnef.co/go/tools/cmd/staticcheck@latest \
+    && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest \
+    && go install github.com/securego/gosec/v2/cmd/gosec@latest \
+    && go install github.com/go-delve/delve/cmd/dlv@latest

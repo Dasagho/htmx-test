@@ -15,9 +15,9 @@ services:
       PORT: 8000 # Reemplaza con el puerto que tu aplicación espera
       HOST: localhost # Usa el nombre del servicio de PostgreSQL
       DB_PORT: 5432 # Puerto estándar de PostgreSQL
-      USER: postgres # Reemplaza si tienes un nombre de usuario diferente
-      PASS: root # Reemplaza con tu contraseña
-      DBNAME: database_test # Reemplaza con el nombre de tu base de datos
+      DB_USER: postgres # Reemplaza si tienes un nombre de usuario diferente
+      DB_PASS: root # Reemplaza con tu contraseña
+      DB_NAME: database_test # Reemplaza con el nombre de tu base de datos
       SSL: 'disable' # Ajusta según tus necesidades
     network_mode: host
     depends_on:
