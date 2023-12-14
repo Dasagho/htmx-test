@@ -15,7 +15,7 @@ var (
 	logDir      string
 )
 
-func init() {
+func CreateLogs() {
 	logDir = "log"
 	if _, err := os.Stat(logDir); os.IsNotExist(err) {
 		os.Mkdir(logDir, 0755)
@@ -42,18 +42,18 @@ func initLogger(filename string) *log.Logger {
 	return logger
 }
 
-func logFormatted(logger *log.Logger, level, message string) {
-	logger.Printf("[%s] %s: %s", time.Now().Format("2006-01-02 15:04:05"), level, message)
+func logFormatted(logger *log.Logger, message string) {
+	logger.Printf("[%s] %s", time.Now().Format("02-01-2006 15:04:05"), message)
 }
 
 func Debug(message string) {
-	logFormatted(debugLogger, "DEBUG", message)
+	logFormatted(debugLogger, message)
 }
 
 func Error(message string) {
-	logFormatted(errorLogger, "ERROR", message)
+	logFormatted(errorLogger, message)
 }
 
 func Info(message string) {
-	logFormatted(infoLogger, "INFO", message)
+	logFormatted(infoLogger, message)
 }

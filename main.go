@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/dasagho/htmx-test/db"
+	logging "github.com/dasagho/htmx-test/log"
 	"github.com/dasagho/htmx-test/routers"
 )
 
@@ -14,6 +15,7 @@ func main() {
 		port = "8080" // Puerto por defecto
 	}
 
+	logging.CreateLogs()
 	db.ConnectDB()
 	mux := routers.NewServer()
 	http.ListenAndServe(":"+port, mux)

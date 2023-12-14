@@ -8,6 +8,7 @@ import (
 	"os"
 	"testing"
 
+	logging "github.com/dasagho/htmx-test/log"
 	"github.com/dasagho/htmx-test/models"
 	"github.com/dasagho/htmx-test/views"
 )
@@ -15,6 +16,9 @@ import (
 func TestIndexHandler(t *testing.T) {
 	// Cambio de ruta para correcto funcionamiento del paquete view
 	os.Chdir("../")
+
+	// Inicializar los logs
+	logging.CreateLogs()
 
 	// Crear peticion HTTP
 	req, err := http.NewRequest("GET", "/", nil) // Tercer parametro para el cuerpo de la peticion http
