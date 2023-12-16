@@ -3,7 +3,6 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/dasagho/htmx-test/db"
 	"github.com/dasagho/htmx-test/service"
 	"github.com/dasagho/htmx-test/views"
 )
@@ -29,8 +28,7 @@ func (s SearchResultHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func NewSearchResultHandler() SearchResultHandler {
-	resultRepo := &db.ResultRepository{}
-	resultService := &service.SearchResultSerice{SearchRepo: resultRepo}
+	resultService := &service.SearchResultSerice{}
 	resultHandler := SearchResultHandler{SearchResultService: resultService}
 	return resultHandler
 }

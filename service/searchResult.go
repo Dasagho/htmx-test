@@ -1,4 +1,4 @@
-package db
+package service
 
 import (
 	"strings"
@@ -6,10 +6,10 @@ import (
 	"github.com/dasagho/htmx-test/models"
 )
 
-type ResultRepository struct {
+type SearchResultSerice struct {
 }
 
-func (repo *ResultRepository) GetResults(query string) (*models.Result, error) {
+func (s *SearchResultSerice) GetResults(query string) (*models.Result, error) {
 	var lista []string
 	valorSinEspacios := strings.TrimSpace(query)
 	if valorSinEspacios == "" {
@@ -19,6 +19,5 @@ func (repo *ResultRepository) GetResults(query string) (*models.Result, error) {
 	}
 
 	data := models.Result{List: lista}
-
 	return &data, nil
 }

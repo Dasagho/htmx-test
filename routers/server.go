@@ -3,7 +3,7 @@ package routers
 import (
 	"net/http"
 
-	"github.com/dasagho/htmx-test/handlers"
+	handlers "github.com/dasagho/htmx-test/handlers/pages"
 	"github.com/dasagho/htmx-test/views"
 )
 

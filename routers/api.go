@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/dasagho/htmx-test/db"
-	"github.com/dasagho/htmx-test/handlers"
+	handlers "github.com/dasagho/htmx-test/handlers/api"
 	"github.com/dasagho/htmx-test/service"
 )
 
