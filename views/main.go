@@ -3,6 +3,7 @@ package views
 import (
 	"fmt"
 	"html/template"
+	"io"
 	"io/fs"
 	"log"
 	"path/filepath"
@@ -71,4 +72,9 @@ func (t *Template) parseTemplates(path ...string) error {
 
 func GetTemplates() *template.Template {
 	return Tmpl.Templ
+}
+
+func Render(wr io.Writer, templateName string, data any) error {
+	err := Tmpl.Templ.ExecuteTemplate(wr, templateName, data)
+	return err
 }

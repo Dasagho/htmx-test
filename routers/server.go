@@ -14,6 +14,7 @@ func NewServer() *http.ServeMux {
 	// Init main Mux
 	mainMux := http.NewServeMux()
 	mainMux.HandleFunc("/", handlers.IndexHandler)
+	mainMux.HandleFunc("/sketch", handlers.SketchHandler)
 
 	// Init Api Mux
 	apiMux := NewApiMux()
