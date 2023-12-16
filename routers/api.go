@@ -15,9 +15,8 @@ func NewApiMux() *http.ServeMux {
 	contactService := service.NewMyContactService(contactData)
 	contactHandler := handlers.NewContactHandler(contactService)
 
-	apiMux.HandleFunc("/mouse_entered", handlers.Mouse)
 	apiMux.Handle("/contact", contactHandler)
-	apiMux.Handle("/trigger_delay", resultHandler)
+	apiMux.Handle("/list-input", resultHandler)
 
 	return apiMux
 }
