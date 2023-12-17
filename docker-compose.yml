@@ -13,7 +13,7 @@ services:
     image: htmx-test # Reemplaza con el nombre de tu imagen de aplicación
     environment:
       PORT: 8000 # Reemplaza con el puerto que tu aplicación espera
-      HOST: postgres # Usa el nombre del servicio de PostgreSQL
+      # DB_HOST: postgres # Usa el nombre del servicio de PostgreSQL
       DB_PORT: 5432 # Puerto estándar de PostgreSQL
       DB_USER: postgres # Reemplaza si tienes un nombre de usuario diferente
       DB_PASS: root # Reemplaza con tu contraseña
