@@ -11,7 +11,6 @@ import (
 
 	logging "github.com/dasagho/htmx-test/log"
 	"github.com/lib/pq"
-	_ "github.com/lib/pq"
 )
 
 var (
