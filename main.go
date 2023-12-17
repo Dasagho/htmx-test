@@ -23,7 +23,7 @@ func main() {
 
 	logging.CreateLogs()
 	db.ConnectDB()
-	mux := routers.NewServer()
+	server := routers.NewServer()
 	log.Printf("Server listening on: http://%s:%s", host, port)
-	http.ListenAndServe(":"+port, mux)
+	http.ListenAndServe(":"+port, server)
 }

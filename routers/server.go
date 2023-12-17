@@ -4,10 +4,11 @@ import (
 	"net/http"
 
 	handlers "github.com/dasagho/htmx-test/handlers/pages"
+	"github.com/dasagho/htmx-test/middleware"
 	"github.com/dasagho/htmx-test/views"
 )
 
-func NewServer() *http.ServeMux {
+func NewServer() http.Handler {
 	// Parse html templates
 	views.InitializeTemplate()
 
@@ -24,5 +25,7 @@ func NewServer() *http.ServeMux {
 
 	mainMux.Handle("/api/", http.StripPrefix("/api", apiMux))
 	mainMux.Handle("/static/", http.StripPrefix("/static/", fs))
-	return mainMux
+
+	protectedMux := middleware.SessionMiddleware(mainMux)
+	return protectedMux
 }
