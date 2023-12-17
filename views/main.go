@@ -1,6 +1,7 @@
 package views
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"io"
@@ -16,7 +17,10 @@ type Template struct {
 	Templ *template.Template
 }
 
-var Tmpl Template
+var (
+	Tmpl               Template
+	errNoMatchingFiles = errors.New("no matching files found")
+)
 
 func InitializeTemplate() {
 	projectRoot, err := util.FindGoMod()
@@ -40,13 +44,13 @@ func InitializeTemplate() {
 			// Load views html
 			pathStruct := strings.Split(path, "/")
 			err = Tmpl.parseTemplates(pathStruct[0], pathStruct[1], "*.html")
-			if err != nil {
+			if err != nil && !errors.Is(err, errNoMatchingFiles) {
 				return err
 			}
 
 			// Load components html
 			err = Tmpl.parseTemplates(pathStruct[0], pathStruct[1], "components", "*.html")
-			if err != nil {
+			if err != nil && !errors.Is(err, errNoMatchingFiles) {
 				return err
 			}
 		}
@@ -61,9 +65,19 @@ func InitializeTemplate() {
 
 func (t *Template) parseTemplates(path ...string) error {
 	htmlFiles := filepath.Join(path...)
+
+	matchingFiles, err := filepath.Glob(htmlFiles)
+	if err != nil {
+		return fmt.Errorf("error buscando ficheros: %s, %s", htmlFiles, err)
+	}
+
+	if len(matchingFiles) == 0 {
+		return errNoMatchingFiles
+	}
+
 	templ, err := t.Templ.ParseGlob(htmlFiles)
 	if err != nil {
-		return fmt.Errorf("error parseando fichero: %s, %s", path, err)
+		return fmt.Errorf("error parseando fichero: %s, %s", htmlFiles, err)
 	}
 
 	t.Templ = templ // Solo actualiza t.Templ si ParseGlob fue exitoso
