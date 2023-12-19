@@ -1,25 +1,23 @@
 version: '3.3'
 
 services:
-  postgres:
+  postgres-service:
     image: postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: database_test
-    network_mode: host
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
     
   mi-aplicacion:
     image: htmx-test # Reemplaza con el nombre de tu imagen de aplicación
     environment:
-      PORT: 8000 # Reemplaza con el puerto que tu aplicación espera
-      # DB_HOST: postgres # Usa el nombre del servicio de PostgreSQL
-      DB_PORT: 5432 # Puerto estándar de PostgreSQL
-      DB_USER: postgres # Reemplaza si tienes un nombre de usuario diferente
-      DB_PASS: root # Reemplaza con tu contraseña
-      DB_NAME: database_test # Reemplaza con el nombre de tu base de datos
-      SSL: 'disable' # Ajusta según tus necesidades
-      JWT_TOKEN: 'KataLaMama'
-    network_mode: host
+      PORT: ${PORT} # Reemplaza con el puerto que tu aplicación espera
+      DB_HOST: postgres-service # Usa el nombre del servicio de PostgreSQL
+      DB_PORT: ${DB_PORT} # Puerto estándar de PostgreSQL
+      DB_USER: ${DB_USER} # Reemplaza si tienes un nombre de usuario diferente
+      DB_PASS:  ${DB_PASS} # Reemplaza con tu contraseña
+      DB_NAME:  ${DB_NAME} # Reemplaza con el nombre de tu base de datos
+      SSL: ${SSL} # Ajusta según tus necesidades
+      JWT_TOKEN: ${JWT_TOKEN} 
     depends_on: 
-      - postgres
+      - postgres-service

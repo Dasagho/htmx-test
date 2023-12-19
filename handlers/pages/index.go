@@ -36,10 +36,10 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		Name:     "auth_token",
 		Value:    tokenString,
 		Expires:  time.Now().Add(72 * time.Hour),
-		HttpOnly: true,                 // Important: Make the cookie inaccessible to JavaScript
-		Path:     "/",                  // The cookie is available for all paths
-		Secure:   true,                 // Set to true if you are using HTTPS
-		SameSite: http.SameSiteLaxMode, // CSRF protection
+		HttpOnly: true,                    // Important: Make the cookie inaccessible to JavaScript
+		Path:     "/",                     // The cookie is available for all paths
+		Secure:   true,                    // Set to true if you are using HTTPS
+		SameSite: http.SameSiteStrictMode, // CSRF protection
 	}
 
 	// Set the cookie in the response header
