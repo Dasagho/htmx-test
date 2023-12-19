@@ -23,7 +23,8 @@ func NewServer() http.Handler {
 	// Init static Mux
 	fs := http.FileServer(http.Dir("static"))
 
-	mainMux.Handle("/api/", http.StripPrefix("/api", apiMux))
+	protectedApi := middleware.JWTAuthMiddleware(apiMux)
+	mainMux.Handle("/api/", http.StripPrefix("/api", protectedApi))
 	mainMux.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	protectedMux := middleware.SessionMiddleware(mainMux)

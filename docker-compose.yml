@@ -19,6 +19,7 @@ services:
       DB_PASS: root # Reemplaza con tu contraseña
       DB_NAME: database_test # Reemplaza con el nombre de tu base de datos
       SSL: 'disable' # Ajusta según tus necesidades
+      JWT_TOKEN: 'KataLaMama'
     network_mode: host
     depends_on: 
       - postgres
