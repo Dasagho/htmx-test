@@ -27,11 +27,8 @@ COPY --from=builder /app/views /views
 COPY --from=builder /app/static /static
 COPY --from=builder /app/db 	/db
 
-# Establece una variable de entorno para el puerto (puede ser sobrescrita en tiempo de ejecución)
-ENV PORT=8090
-
 # Expone el puerto (debe coincidir con la variable de entorno PORT)
-EXPOSE $PORT
+EXPOSE 8080
 
 # Ejecuta la aplicación
 CMD ["/myapp"]
